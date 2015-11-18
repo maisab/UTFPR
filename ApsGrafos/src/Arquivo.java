@@ -74,18 +74,17 @@ public class Arquivo {
 
             linhaCertaAtual.clear();
         }
-        
+
         completarMatriz();
         salvarHash();
 
-        for (int l = 0; l < numeroInstancias; l++) {
-            for (int c = 0; c < numeroInstancias; c++) {
-                System.out.print(" " + matriz[l][c]);
-            }
-            System.out.println("\n");
-        }
-        
-        
+//        for (int l = 0; l < numeroInstancias; l++) {
+//            for (int c = 0; c < numeroInstancias; c++) {
+//                System.out.print(" " + matriz[l][c]);
+//            }
+//            System.out.println("\n");
+//        }
+
     }
 
     static void preencherMatriz(ArrayList<String> linhaCertaAtual, int controleLinhaAtual, int posLinha) {
@@ -107,7 +106,7 @@ public class Arquivo {
             for (int j = 0; j < numeroInstancias; j++) {
                 if (i == j) {
                     matriz[i][j] = label;
-                } else if (i > j){
+                } else if (i > j) {
                     matriz[i][j] = matriz[j][i];
                 }
             }
@@ -116,6 +115,30 @@ public class Arquivo {
 
     static void salvarHash() {
 
+        Vertice v;
+        Vertice u;
+        Aresta e;
+        ArrayList<Aresta> arestas;
+
+        for (int i = 0; i < numeroInstancias; i++) {
+            v = new Vertice();
+            v.setNumero(i);
+            arestas = new ArrayList<>();
+//            matrizGrafo.put(v, new ArrayList<>());
+            
+            for (int j = 0; j < numeroInstancias; j++) {
+                u = new Vertice();
+                u.setNumero(j);
+                e = new Aresta();
+                e.setV1(v);
+                e.setV2(u);
+                e.setLabel(matriz[i][j]);
+                arestas.add(e);
+            }
+            matrizGrafo.put(v, arestas);
+        }
+
+        System.out.println("HASHH" + matrizGrafo.toString());
     }
 
     public static void main(String[] args) throws IOException {

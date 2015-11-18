@@ -11,7 +11,8 @@ package grafo;
  */
 public class Vertice {
     private String id;
-
+    private int numero;
+    
     public Vertice() {
        this.id = String.valueOf(getClass().hashCode());
     }
@@ -23,6 +24,16 @@ public class Vertice {
     public void setId(String id) {
         this.id = id;
     }
+
+    public int getNumero() {
+        return numero;
+    }
+
+    public void setNumero(int numero) {
+        this.numero = numero;
+    }
+    
+    
    
     
 }

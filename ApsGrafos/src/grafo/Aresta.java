@@ -41,5 +41,13 @@ public class Aresta<U extends Vertice, V extends Vertice> {
         this.v2 = v2;
     }
 
+    public String getLabel() {
+        return label;
+    }
+
+    public void setLabel(String label) {
+        this.label = label;
+    }
+
     
 }
