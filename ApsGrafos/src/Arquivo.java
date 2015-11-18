@@ -29,7 +29,7 @@ public class Arquivo {
     public Arquivo() {
 
         listaAtual = new ArrayList<>();
-        matrizGrafo = new HashMap<>();
+        matrizGrafo = new HashMap<Vertice, ArrayList<Aresta>>();
     }
 
     private static void lerArquivo() throws FileNotFoundException, IOException {
@@ -119,6 +119,10 @@ public class Arquivo {
         Vertice u;
         Aresta e;
         ArrayList<Aresta> arestas;
+        
+//        this.grafo.put(v, new ArrayList<>());
+//        Aresta nova = new Aresta(s.getVertice2(), s.getVertice1());
+//        this.grafo.get(s.getVertice2()).add(nova);
 
         for (int i = 0; i < numeroInstancias; i++) {
             v = new Vertice();
