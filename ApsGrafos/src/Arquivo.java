@@ -27,9 +27,6 @@ public class Arquivo {
     static String[][] matriz;
 
     public Arquivo() {
-
-        listaAtual = new ArrayList<>();
-        matrizGrafo = new HashMap<>();
     }
 
     private static void lerArquivo() throws FileNotFoundException, IOException {
@@ -74,18 +71,20 @@ public class Arquivo {
 
             linhaCertaAtual.clear();
         }
-        
+
         completarMatriz();
         salvarHash();
 
-        for (int l = 0; l < numeroInstancias; l++) {
-            for (int c = 0; c < numeroInstancias; c++) {
-                System.out.print(" " + matriz[l][c]);
-            }
-            System.out.println("\n");
+        for (Vertice v : matrizGrafo.keySet()) {
+            System.out.println("Vertice : " + v.getNumero() + " Adjacencias  " + matrizGrafo.get(v).toString());
         }
-        
-        
+//
+//        for (int l = 0; l < numeroInstancias; l++) {
+//            for (int c = 0; c < numeroInstancias; c++) {
+//                System.out.print(" " + matriz[l][c]);
+//            }
+//            System.out.println("\n");
+//        }
     }
 
     static void preencherMatriz(ArrayList<String> linhaCertaAtual, int controleLinhaAtual, int posLinha) {
@@ -107,7 +106,7 @@ public class Arquivo {
             for (int j = 0; j < numeroInstancias; j++) {
                 if (i == j) {
                     matriz[i][j] = label;
-                } else if (i > j){
+                } else if (i > j) {
                     matriz[i][j] = matriz[j][i];
                 }
             }
@@ -115,6 +114,37 @@ public class Arquivo {
     }
 
     static void salvarHash() {
+
+        Vertice v = null;
+        Vertice u = null;
+        Aresta e = null;
+        matrizGrafo = new HashMap<>();
+
+        ArrayList<Aresta> adjacencias = new ArrayList<Aresta>();
+
+        for (int i = 0; i < numeroInstancias; i++) {
+            v = new Vertice();
+            v.setNumero(i);
+
+            for (int j = 0; j < numeroInstancias; j++) {
+                u = new Vertice();
+                u.setNumero(j);
+
+                e = new Aresta();
+                e.setV1(v);
+                e.setV2(u);
+                e.setLabel(matriz[i][j]);
+
+                adjacencias.add(e);
+            }
+            for (Aresta s : adjacencias) {
+                System.out.println("Lista Adjacencias : " + adjacencias.get(i).getLabel());
+
+            }
+            matrizGrafo.put(v, adjacencias);
+            adjacencias.clear();
+
+        }
 
     }
 

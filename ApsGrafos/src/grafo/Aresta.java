@@ -12,6 +12,7 @@ package grafo;
  * @param <V>
  */
 public class Aresta<U extends Vertice, V extends Vertice> {
+
     private Vertice v1 = null;
     private Vertice v2 = null;
     private String label = "";
@@ -24,7 +25,6 @@ public class Aresta<U extends Vertice, V extends Vertice> {
         this.v2 = v2;
     }
 
-    
     public Vertice getV1() {
         return v1;
     }
@@ -41,5 +41,12 @@ public class Aresta<U extends Vertice, V extends Vertice> {
         this.v2 = v2;
     }
 
-    
+    public String getLabel() {
+        return label;
+    }
+
+    public void setLabel(String label) {
+        this.label = label;
+    }
+
 }
