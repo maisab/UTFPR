@@ -12,11 +12,22 @@ package grafo;
 public class Vertice {
     private String id;
     private int numero;
+    private boolean status = true;
+    
 
     public Vertice() {
        this.id = String.valueOf(getClass().hashCode());
     }
 
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
+
+    
     public String getId() {
         return id;
     }

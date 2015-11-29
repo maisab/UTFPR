@@ -5,51 +5,31 @@
  */
 package grafo;
 
-import java.util.Iterator;
+import java.util.ArrayList;
 
 /**
  *
- * @author Maa - PC
+ * @author nani
  */
-public interface Grafo<V extends Vertice, A extends Aresta<V, V>> {
+public class Grafo {
+     ArrayList<Vertice> vertice = new ArrayList<>();
+     ArrayList<Aresta> aresta = new ArrayList<>();
 
-    public final int NAO_DIRECIONADO = 0;
-    public final int DIRECIONADO = 1;
-    public final int PONDERADO = 2;
-    public final int DIRECIONADO_PONDERADO = 3;
+    public ArrayList<Vertice> getVertice() {
+        return vertice;
+    }
 
-    public Iterator<V> getVerticesAdjacentes(V u);
+    public void setVertice(ArrayList<Vertice> vertice) {
+        this.vertice = vertice;
+    }
 
-    public Iterator<V> getVertices();
+    public ArrayList<Aresta> getAresta() {
+        return aresta;
+    }
 
-    public Iterator<A> getArestas();
-
-    public V getVertice(String idVertice);
-
-    /**
-     * Adiciona o vértice <code>verticeAdicionado</code> ajdacente ao vértice
-     * <code>verticeNoGrafo</code> que já está no grafo. Necessariamente, o
-     * vértice <code>verticeNoGrafo</code> precisa estar no grafo
-     *
-     * @param verticeNoGrafo Vértice que já está no grafo
-     * @param verticeAdicionado Vértice sendo adicionado no grafo
-     */
-    public void adicionaVertice(V verticeNoGrafo, V verticeAdicionado);
-
-    /**
-     * Adiciona um vértice <code>verticeAdicionado</code> ao grafo. O vértice
-     * ficará sem nenhum outro vértice adjacente.
-     *
-     * @param verticeAdicionado Vértice sendo adicionado ao grafo
-     */
-    public void adicionaVertice(V verticeAdicionado);
-
-    /**
-     * Adiciona uma aresta ao grafo. Se algum dos vértices da aresta adicionada
-     * já estiverem no grafo eles são sobrepostos
-     *
-     * @param arestaAdicionada Aresta adicionada ao grafo
-     */
-    public void adicionaAresta(A arestaAdicionada);
-
+    public void setAresta(ArrayList<Aresta> aresta) {
+        this.aresta = aresta;
+    }
+    
+    
 }
