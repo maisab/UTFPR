@@ -6,29 +6,23 @@
 package grafo;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  *
  * @author nani
  */
 public class Grafo {
-     ArrayList<Vertice> vertice = new ArrayList<>();
-     ArrayList<Aresta> aresta = new ArrayList<>();
+    HashMap<Vertice, Aresta> grafo = new HashMap<>();
+//     ArrayList<Vertice> vertice = new ArrayList<>();
+//     ArrayList<Aresta> aresta = new ArrayList<>();
 
-    public ArrayList<Vertice> getVertice() {
-        return vertice;
+    public HashMap<Vertice, Aresta> getGrafo() {
+        return grafo;
     }
 
-    public void setVertice(ArrayList<Vertice> vertice) {
-        this.vertice = vertice;
-    }
-
-    public ArrayList<Aresta> getAresta() {
-        return aresta;
-    }
-
-    public void setAresta(ArrayList<Aresta> aresta) {
-        this.aresta = aresta;
+    public void setGrafo(HashMap<Vertice, Aresta> grafo) {
+        this.grafo = grafo;
     }
     
     

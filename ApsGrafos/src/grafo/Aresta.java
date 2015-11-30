@@ -16,6 +16,7 @@ public class Aresta<U extends Vertice, V extends Vertice> {
     private Vertice v1 = null;
     private Vertice v2 = null;
     private String label = "";
+    private boolean percorrida = false;
 
     public Aresta() {
     }
@@ -48,5 +49,20 @@ public class Aresta<U extends Vertice, V extends Vertice> {
     public void setLabel(String label) {
         this.label = label;
     }
+
+    public boolean isPercorrida() {
+        return percorrida;
+    }
+
+    public void setPercorrida(boolean percorrida) {
+        this.percorrida = percorrida;
+    }
+    
+    @Override
+    public String toString() {
+        return "Aresta{" + "v1=" + v1.getNumero() + ", v2=" + v2.getNumero() + ", label=" + label + '}';
+    }
+    
+    
 
 }
