@@ -45,32 +45,68 @@ public class Grafo {
             System.out.println("\n");
         }
     }
-    
-    public void getNumeroVertices(){
+
+    public void getNumeroVertices() {
         System.out.println("NUMERO DE VERTICES DO GRAFO : " + this.grafo.keySet().size());
     }
-    
-    public ArrayList<Vertice> getVertices(){
+
+    public ArrayList<Vertice> getVertices() {
         ArrayList<Vertice> vertices = new ArrayList<>();
-        
-        for(Map.Entry entry : this.grafo.entrySet()){
-            vertices.add((Vertice)entry.getKey());
+
+        for (Map.Entry entry : this.grafo.entrySet()) {
+            vertices.add((Vertice) entry.getKey());
         }
-        
+
         return vertices;
     }
-    
-    public ArrayList<String> getLabels(){
+
+    public ArrayList<Aresta> getListaArestasAdjacentes(Vertice v) {
+        ArrayList<Aresta> adjacencias = new ArrayList<>();
+
+        for (Map.Entry entry : this.grafo.entrySet()) {
+            if (entry.getKey().equals(v)) {
+                for (Aresta e : (List<Aresta>) entry.getValue()) {
+                    adjacencias.add(e);
+                }
+//                System.out.println("ENCONTROU VERTICE");
+                return adjacencias;
+            }
+        }
+//        System.out.println("não ENCONTROU VERTICE");
+
+        return adjacencias;
+    }
+
+    public ArrayList<Vertice> getListaVerticesAdjacentes(Vertice v) {
+        ArrayList<Vertice> adjacentes = new ArrayList<>();
+        Vertice aux = new Vertice();
+
+        for (Map.Entry entry : this.grafo.entrySet()) {
+            aux = (Vertice) entry.getKey(); 
+            if (aux.getNumero() == v.getNumero()) {
+                for (Aresta e : (List<Aresta>) entry.getValue()) {
+                    adjacentes.add(e.getV2());
+                }
+//                System.out.println("\n ENCONTROU O VERTICE \n " + " \nADJACENTES  " + adjacentes.toString());
+                return adjacentes;
+            }
+        }
+
+//        System.out.println("\n NÃO ENCONTROU O VERTICE \n");
+        return adjacentes;
+    }
+
+    public ArrayList<String> getLabels() {
         ArrayList labels = new ArrayList<>();
-        
-        for(Map.Entry entry : this.grafo.entrySet()){
-            for(Aresta e : (List<Aresta>) entry.getValue()){
-                if(!labels.contains(e.getLabel())){
+
+        for (Map.Entry entry : this.grafo.entrySet()) {
+            for (Aresta e : (List<Aresta>) entry.getValue()) {
+                if (!labels.contains(e.getLabel())) {
                     labels.add(e.getLabel());
                 }
             }
         }
-        
+
         return labels;
     }
 
