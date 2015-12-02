@@ -83,7 +83,8 @@ public class Grafo {
 
         for (Map.Entry entry : this.grafo.entrySet()) {
             aux = (Vertice) entry.getKey(); 
-            if (aux.getNumero() == v.getNumero()) {
+            if (aux.equals(v)) {
+//            if (aux.getNumero() == v.getNumero()) {
                 for (Aresta e : (List<Aresta>) entry.getValue()) {
                     adjacentes.add(e.getV2());
                 }
