@@ -27,13 +27,12 @@ public class Arquivo {
 
     private static String label;
     private static int numeroInstancias;
-    static HashMap<Vertice, List<Aresta>> matrizGrafo;
+    static Grafo matrizGrafo;
     static String[][] matriz;
-    static ArrayList<String> listaLabels = new ArrayList<>();
     static List<Vertice> verticesGrafo = new ArrayList<>();
-    static List<List<Aresta>> adjacenciasVerticeAtual = new ArrayList<>();
-//    static ArrayList<Aresta> listaAtual;
-//    static ArrayList<String> lista = new ArrayList<>(); //contem a quantidade de label de cada label,eh composto pelo nome do laber +  a quantidade delabel
+    static List<Aresta> adjacenciasGrafo = new ArrayList<>();
+    static int componentes = 0;
+    static ArrayList<String> listaLabels;
 
     public Arquivo() {
     }
@@ -82,16 +81,18 @@ public class Arquivo {
 
         }
 
-        completarMatriz();
-        montaGrafo();
-//        printGrafo();
-//        componentesPorLabel();
-        componentesDoGrafo();
-        System.out.println("LISTA LABELS ATUAL : " + listaLabels.toString());
-
+//        completarMatriz();
 //        printMatriz();
+        montaGrafo();
+//        matrizGrafo.printGrafo();
+//        matrizGrafo.numeroVertices();
+        listaLabels = matrizGrafo.getLabels();
+        System.out.println("VETOR DE LABELS : " + listaLabels.toString());
+        
+
+        
         listaLabels.clear(); //limpa para pegar a lista de labels do proximo grafo
-        adjacenciasVerticeAtual.clear();
+        adjacenciasGrafo.clear();
         verticesGrafo.clear();
     }
 
@@ -109,37 +110,37 @@ public class Arquivo {
         }
     }
 
-    static void completarMatriz() {
-        boolean existeNaLista = false;
-
-        for (int i = 0; i < numeroInstancias; i++) {
-            for (int j = 0; j < numeroInstancias; j++) {
-                if (i == j) {
-                    matriz[i][j] = label;
-                }
-//                 else if (i > j) {
-//                    matriz[i][j] = matriz[j][i];
+//    static void completarMatriz() {
+//        boolean existeNaLista = false;
+//
+//        for (int i = 0; i < numeroInstancias; i++) {
+//            for (int j = 0; j < numeroInstancias; j++) {
+//                if (i == j) {
+//                    matriz[i][j] = label;
 //                }
-
-                existeNaLista = false;
-
-                for (String auxLabels : listaLabels) { // verifica se o label já esta na lista
-                    if (matriz[i][j] == null) {
-                        existeNaLista = true;
-                    } else if (auxLabels.equals(matriz[i][j])) {
-                        existeNaLista = true;
-                    }
-                }
-
-                if (!existeNaLista) { // se não conter na lista de labels atual, adiciona
-                    listaLabels.add(matriz[i][j]);
-                }
-            }
-        }
-    }
+////                 else if (i > j) {
+////                    matriz[i][j] = matriz[j][i];
+////                }
+//
+//                existeNaLista = false;
+//
+//                for (String auxLabels : listaLabels) { // verifica se o label já esta na lista
+//                    if (matriz[i][j] == null) {
+//                        existeNaLista = true;
+//                    } else if (auxLabels.equals(matriz[i][j])) {
+//                        existeNaLista = true;
+//                    }
+//                }
+//
+//                if (!existeNaLista) { // se não conter na lista de labels atual, adiciona
+//                    listaLabels.add(matriz[i][j]);
+//                }
+//            }
+//        }
+//    }
 
     static void montaGrafo() {
-        matrizGrafo = new HashMap<Vertice, List<Aresta>>();
+        matrizGrafo = new Grafo();
 
         List<Aresta> listaArestasVerticeAtual = new ArrayList<>();
         Vertice v = null;
@@ -147,45 +148,31 @@ public class Arquivo {
         Aresta a = null;
 
         for (int i = 0; i < matriz.length; i++) {
-
             v = new Vertice();
             v.setNumero(i);
-            matrizGrafo.put(v, new ArrayList<Aresta>());
-            verticesGrafo.add(v);
+//            matrizGrafo.put(v, new ArrayList<Aresta>());
+//            verticesGrafo.add(v);
 
             for (int j = 0; j < matriz.length; j++) {
                 u = new Vertice();
                 u.setNumero(j);
                 a = new Aresta();
 
-                if (matriz[i][j] != null) { // adiciona somente adjacencias certas
+                if ((matriz[i][j] != null) && (!matriz[i][j].equals("20")) ) { // adiciona somente adjacencias certas
                     a.setV1(v);
                     a.setV2(u);
                     a.setLabel(matriz[i][j]);
                     listaArestasVerticeAtual.add(a);
                 }
             }
-//            System.out.println("LISTA : " + listaArestasVerticeAtual.toString());
-            adjacenciasVerticeAtual.add(new ArrayList<Aresta>());
-            adjacenciasVerticeAtual.get(i).addAll(listaArestasVerticeAtual);
-            
-            matrizGrafo.get(v).addAll(listaArestasVerticeAtual);
-            
+//            adjacenciasGrafo.add(new ArrayList<Aresta>());
+//            adjacenciasGrafo.get(i).addAll(listaArestasVerticeAtual);
+
+            matrizGrafo.adicionaAresta(v, listaArestasVerticeAtual);
+//            matrizGrafo.get(v).addAll(listaArestasVerticeAtual);
+
             listaArestasVerticeAtual.clear();
         }
-    }
-
-    static void printGrafo() {
-
-        for (Map.Entry entry : matrizGrafo.entrySet()) {
-            System.out.println("VERTICE : " + entry.getKey().toString());
-            for (Aresta aresta : (List<Aresta>) entry.getValue()) {
-                System.out.println("Aresta " + aresta.toString());
-            }
-            System.out.println("\n");
-        }
-
-        System.out.println("------------------ACABOU HASH----------------------------");
     }
 
     static void printMatriz() {
@@ -199,25 +186,42 @@ public class Arquivo {
 
     static void componentesDoGrafo() {
         
-       int posVetices = 0;
-        while(!verticesGrafo.isEmpty()){
-            verticesGrafo.remove(posVetices);
-            while(!adjacenciasVerticeAtual.isEmpty()){
-                for(int i = 0; i < adjacenciasVerticeAtual.get(posVetices).size(); i++){
-                    
-                }
-                
-            }
-        }
+        List<Vertice> verticesNaoVisitados = verticesGrafo;
+        List<Aresta> arestasNaoVisitadas = new ArrayList<>();
+        int numeroComponetes = 0;
+        int posVerticeAtual = 0;
         
+        
+        
+//        while(verticesNaoVisitados.isEmpty()){
+//            numeroComponetes++;
+//            for(Aresta e : adjacenciasGrafo.get(posVerticeAtual)){
+//                arestasNaoVisitadas.add(e);
+//            }
+//            verticesNaoVisitados.remove(posVerticeAtual);
+////            for(int i = 0; i )
+////        }
+//        }
         System.out.println("ARRAY VERTICES " + verticesGrafo.toString());
-        System.out.println("ARRAY ARESTAS " + adjacenciasVerticeAtual.toString());
+        System.out.println("ARRAY ARESTAS " + adjacenciasGrafo.toString());
 
     }
 
-    static void listaLabels() {
+//    public void buscaProfundidade(Grafo grafo, int raiz) {
+//
+////        percArv.add(raiz);
+//
+////        visitados[raiz] = true;
+//
+//        int i;
+//        for (i = 0; i < verticesGrafo.size(); i++) {
+//            if (matriz[raiz][i] != 0 && visitados[i] == false) {
+//                buscaProfundidade(grafo, i);
+////                percArv.add(raiz);
+//            }
+//        }
+//    }
 
-    }
 
     public static void main(String[] args) throws IOException {
         lerArquivo();
