@@ -50,7 +50,7 @@ public class Grafo {
         System.out.println("NUMERO DE VERTICES DO GRAFO : " + this.grafo.keySet().size());
     }
 
-    public ArrayList<Vertice> getVertices() {
+    public ArrayList<Vertice> getVerticesGrafo() {
         ArrayList<Vertice> vertices = new ArrayList<>();
 
         for (Map.Entry entry : this.grafo.entrySet()) {
@@ -62,6 +62,7 @@ public class Grafo {
 
     public ArrayList<Aresta> getListaArestasAdjacentes(Vertice v) {
         ArrayList<Aresta> adjacencias = new ArrayList<>();
+        
 
         for (Map.Entry entry : this.grafo.entrySet()) {
             if (entry.getKey().equals(v)) {

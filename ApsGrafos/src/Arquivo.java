@@ -32,7 +32,8 @@ public class Arquivo {
     static int componentes = 0;
 
     static ArrayList<Vertice> verticesCriados = new ArrayList<>();
-    static ArrayList<Vertice> verticesNaoVisitados;
+//    static ArrayList<Vertice> verticesNaoVisitados;
+//    static ArrayList<Aresta> adjacenciasVertice;
 
     public Arquivo() {
 
@@ -40,7 +41,7 @@ public class Arquivo {
 
     private static void lerArquivo() throws FileNotFoundException, IOException {
         String linha = "";
-        FileReader file = new FileReader(new File("HDGraph20_20.txt"));
+        FileReader file = new FileReader(new File("LDGraph20_20.txt"));
         BufferedReader br = new BufferedReader(file);
         ArrayList<String> listaLinhaAtual = new ArrayList<>();
 
@@ -54,7 +55,7 @@ public class Arquivo {
                 insereMatrizAtual(listaLinhaAtual);
                 System.out.println("\n****************ACABOU A MATRIZ*********************\n");
                 listaLinhaAtual.clear(); //limpa a lista
-                return;
+//                return;
             } else {
                 listaLinhaAtual.add(linha);
             }
@@ -82,26 +83,21 @@ public class Arquivo {
 
         }
 
-//        completarMatriz();
+        completarMatriz();
 //        printMatriz();
         montaGrafo();
-        verticesNaoVisitados = matrizGrafo.getVertices(); // recebe todos os vertices
 //        matrizGrafo.printGrafo();
-        contaComponentes();
-//        matrizGrafo.printGrafo();
-//        matrizGrafo.numeroVertices();
-//        listaLabels = matrizGrafo.getLabels();
-//        System.out.println("VETOR DE LABELS : " + listaLabels.toString());
+        contaCC();
+//        contaAdjacenciasPorVertice();
 
-//        
-//        listaLabels.clear(); //limpa para pegar a lista de labels do proximo grafo
-//        adjacenciasGrafo.clear();
-//        verticesGrafo.clear();
-//        verticesGrafo = matrizGrafo.getVertices();
-//        
-//        adjacenciasGrafo = matrizGrafo.getAdjacenciasPorVetice(verticesGrafo.get(4));
-//        
-//        System.out.println("LISTA DE ADJACENCIA VERTICE  : " + verticesGrafo.get(4).toString() + "\n" + adjacenciasGrafo.toString());
+    }
+
+    public static void contaAdjacenciasPorVertice() {
+        for (Map.Entry entry : matrizGrafo.getGrafo().entrySet()) {
+//            for(List<Aresta> a : matrizGrafo.getGrafo().values()){
+            System.out.println("PARA O VERTICE  " + entry.getKey().toString() + " LISTA ADJ  " + entry.getValue());
+//            }
+        }
     }
 
     static void preencherMatriz(ArrayList<String> linhaCertaAtual, int controleLinhaAtual, int posLinha) {
@@ -139,7 +135,9 @@ public class Arquivo {
         Aresta a = null;
 
         for (int i = 0; i < matriz.length; i++) {
+//            System.out.println(" I IGUAL A  " + i);
             v = criaVertice(i);
+//            System.out.println("CRIANDO VERTICE  : " + v.toString());
 //            v.setNumero(i);
 //            matrizGrafo.put(v, new ArrayList<Aresta>());
 //            verticesGrafo.add(v);
@@ -149,10 +147,12 @@ public class Arquivo {
                 u.setNumero(j);
                 a = new Aresta();
 
-                if ((matriz[i][j] != null) && (!matriz[i][j].equals("20"))) { // adiciona somente adjacencias certas
+                if ((!matriz[i][j].equals("20"))) { // adiciona somente adjacencias certas
+
                     a.setV1(v);
                     a.setV2(u);
                     a.setLabel(matriz[i][j]);
+//                    System.out.println("VERTICE : " + v.toString() + " ARESTA " + a.toString());
                     listaArestasVerticeAtual.add(a);
                 }
             }
@@ -164,6 +164,7 @@ public class Arquivo {
 
             listaArestasVerticeAtual.clear();
         }
+
     }
 
     static void printMatriz() {
@@ -177,13 +178,16 @@ public class Arquivo {
 
     static Vertice criaVertice(int numero) {
         Vertice v = null;
-        if (verticesCriados.size() == 0) {
+
+        if (verticesCriados.isEmpty()) {
             for (int i = 0; i < numeroInstancias; i++) {
                 v = new Vertice();
                 v.setNumero(i);
                 verticesCriados.add(v);
+//                System.out.println("VERTICES CRIADOS" + verticesCriados.toString());
+//                System.out.println("numero + " + numero);
             }
-//             System.out.println("CRIOU OS VERTICES + " + verticesCriados.toString());
+            v = verticesCriados.get(numero);
         } else {
             v = verticesCriados.get(numero);
 //            System.out.println("PEGOU VERTICE EXISTENTE" + v.toString());
@@ -193,54 +197,210 @@ public class Arquivo {
         return v;
     }
 
-    static void contaComponentes() {
-//        System.out.println("\nCRIA VERTICES : " + verticesCriados.toString());
-
-        ArrayList<Vertice> verticesNaoVisitados = matrizGrafo.getVertices();
-        ArrayList<Aresta> adjacentes = new ArrayList<Aresta>();
-        ArrayList<Aresta> auxAdj = new ArrayList<Aresta>();
-        boolean estaNaLista = false;
-
+//       static void contaComponentes() {
+////        System.out.println("\nCRIA VERTICES : " + verticesCriados.toString());
+//        Vertice v = new Vertice();
+//        int componentes = 0;
+//        ArrayList<Aresta> aux = new ArrayList<>();
 //
-        int componentes = 1;
+////        verticesNaoVisitados = matrizGrafo.getVerticesGrafo();
+////        System.out.println("VERTICES NÃO VISITADOS : " + verticesNaoVisitados.toString());
+//
+////        ArrayList<Aresta> adjacentes = matrizGrafo.getListaArestasAdjacentes(verticesNaoVisitados.get(0));
+////        System.out.println("ARESTAS ADJACENTES : " + adjacentes.toString());
+//
+////        verticesNaoVisitados.get(0).setStatus(false);
+////        verticesNaoVisitados.remove(0); //removo o primeiro : já peguei os adjacentes
+//
+////        while (!verticesNaoVisitados.isEmpty()) {
+//            componentes++;
+//            System.out.println(" -------------- COMPONENTES -------------");
+////            while (!adjacentes.isEmpty()) {
+////                v = adjacentes.get(0).getV2(); //vertice atual
+//                v.setStatus(false);
+//                System.out.println("\n VERTICE ATUAL : " + v.getNumero());
+//                aux = matrizGrafo.getListaArestasAdjacentes(v);
+//                System.out.println("ADJACENCIAS VERTICE ATUAL  : " + aux.toString());
+//
+//                for (int i = 0; i < aux.size(); i++) {
+//                    if (!aux.get(i).isPercorrida() && aux.get(i).getV2().isStatus()) {
+//                        adjacentes.add(aux.get(i));
+//                        aux.get(i).setPercorrida(true);
+//                        aux.get(i).getV2().setStatus(false);
+//                    }
+//                }
+//
+//                aux.removeAll(aux);
+//                aux.clear();
+//                for (int j = 0; j < verticesNaoVisitados.size(); j++) {
+//                    if (verticesNaoVisitados.get(j).equals(v)) {
+//                        verticesNaoVisitados.remove(j);
+//                        System.out.println("VERTICE REMOVIDO VERTICES NAO VISITADOS + " + v.getNumero());
+//                    }
+//                }
+//                System.out.println("ARESTA REMOVIDA ADJACENTES + " + adjacentes.get(0));
+//                adjacentes.remove(0);
+//                System.out.println("ADJACENTES ATUAL : " + adjacentes.toString());
+//            }
+//            if (verticesNaoVisitados.size() >= 0) {
+//                adjacentes = matrizGrafo.getListaArestasAdjacentes(verticesNaoVisitados.get(0));
+//                verticesNaoVisitados.get(0).setStatus(false);
+//                verticesNaoVisitados.remove(0);
+//            }
+//
+//        }
+//
+//        System.out.println("componentes : " + componentes);
+////        ArrayList<Aresta> auxAdj = new ArrayList<Aresta>();
+//////        boolean estaNaLista = false;
+////
+//////
+////        int componentes = 1;
+////        while (!verticesNaoVisitados.isEmpty()) {
+////            System.out.println("\n--------------- NÃO VISITADOS --------------\n");
+////            System.out.println("\n VERTICES NÃO VISITADOS " + verticesNaoVisitados.toString() + "\n");
+////            adjacentes = matrizGrafo.getListaArestasAdjacentes(verticesNaoVisitados.get(0));
+////            System.out.println("ADJACENTES : " + adjacentes.toString());
+////
+////            verticesNaoVisitados.remove(0);
+////
+////            while (!adjacentes.isEmpty()) {
+////                auxAdj = matrizGrafo.getListaArestasAdjacentes(adjacentes.get(0).getV2());
+////                System.out.println("VERTICE ATUAL : " + adjacentes.get(0).getV2());
+////                System.out.println("\n ----------- AUX ADJ " + auxAdj.toString());
+////                System.out.println("TAMANHO AUX ADJ : " + auxAdj.size());
+////
+////                for (int j = 0; j < auxAdj.size(); j++) {
+////                    if (!auxAdj.get(j).isPercorrida()) {
+////                        adjacentes.add(auxAdj.get(j));
+////                    }
+////                }
+////
+////                adjacentes.get(0).setPercorrida(true);
+////
+////                for (int i = 0; i < verticesNaoVisitados.size(); i++) {
+////                    if (verticesNaoVisitados.get(i).equals(adjacentes.get(0).getV2())) {
+////                        verticesNaoVisitados.remove(i);
+////                    }
+////                }
+////
+////                adjacentes.remove(0);
+////                auxAdj.clear();
+////                System.out.println("TAMANHO VERTICES ADJACENTES  " + adjacentes.size());
+////                System.out.println("TAMANHO VERTICES NAO PERCORRIDOS  " + verticesNaoVisitados.size());
+////            }
+////
+////            componentes++;
+////        }
+////
+////        System.out.println("COMPONENTES :  " + componentes);
+//    }
+    static void contaCC() {
+        ArrayList<Vertice> verticesNaoVisitados = matrizGrafo.getVerticesGrafo();
+        ArrayList<Vertice> verticesVisitados = new ArrayList<>();
+        ArrayList<Vertice> adjacentes = new ArrayList<>();
+        ArrayList<Vertice> auxAdjacentes = new ArrayList<>();
+        int componentes = 0;
+
         while (!verticesNaoVisitados.isEmpty()) {
-            System.out.println("\n--------------- NÃO VISITADOS --------------\n");
-            System.out.println("\n VERTICES NÃO VISITADOS " + verticesNaoVisitados.toString() + "\n");
-            adjacentes = matrizGrafo.getListaArestasAdjacentes(verticesNaoVisitados.get(0));
-            System.out.println("ADJACENTES : " + adjacentes.toString());
+            componentes++;
 
+            adjacentes = matrizGrafo.getListaVerticesAdjacentes(verticesNaoVisitados.get(0));
+            verticesVisitados.add(verticesNaoVisitados.get(0));
+            System.out.println("REMOVENDO VERTICE :" + verticesNaoVisitados.get(0));
             verticesNaoVisitados.remove(0);
-            
+
+            System.out.println("--------------------------CONTOU COMPONENTE--------------------------");
             while (!adjacentes.isEmpty()) {
-                auxAdj = matrizGrafo.getListaArestasAdjacentes(adjacentes.get(0).getV2());
-                System.out.println("VERTICE ATUAL : " + adjacentes.get(0).getV2());
-                System.out.println("\n ----------- AUX ADJ " + auxAdj.toString());
-                System.out.println("TAMANHO AUX ADJ : " + auxAdj.size());
 
-                for (int j = 0; j < auxAdj.size(); j++) {
-                    if (!auxAdj.get(j).isPercorrida()) {
-                        adjacentes.add(auxAdj.get(j));
+                auxAdjacentes = matrizGrafo.getListaVerticesAdjacentes(adjacentes.get(0)); //recebo os adjacentes dele
+
+                for (int j = 0; j < auxAdjacentes.size(); j++) {
+                    if (!verticesVisitados.contains(auxAdjacentes.get(j)) && !adjacentes.contains(auxAdjacentes.get(j))) {
+                        adjacentes.add(auxAdjacentes.get(j));
                     }
                 }
 
-                adjacentes.get(0).setPercorrida(true);
+                for (int k = 0; k < verticesNaoVisitados.size(); k++) {
+                    if (verticesNaoVisitados.get(k).equals(adjacentes.get(0))) {
 
-                for (int i = 0; i < verticesNaoVisitados.size(); i++) {
-                    if (verticesNaoVisitados.get(i).equals(adjacentes.get(0).getV2())) {
-                        verticesNaoVisitados.remove(i);
+                        verticesNaoVisitados.remove(k);
                     }
                 }
 
+                System.out.println("REMOVE VERTICE " + adjacentes.get(0));
+                verticesVisitados.add(adjacentes.get(0));
                 adjacentes.remove(0);
-                auxAdj.clear();
-                System.out.println("TAMANHO VERTICES ADJACENTES  " + adjacentes.size());
-                System.out.println("TAMANHO VERTICES NAO PERCORRIDOS  " + verticesNaoVisitados.size());
+
+                System.out.println("NÃO VISITADOS : " + verticesNaoVisitados.toString());
+                System.out.println("VISITADOS : " + verticesVisitados.toString());
+                System.out.println("ADJACENTES : " + adjacentes.toString());
+                System.out.println("-------PROXIMO ADJACENTE ------------------");
             }
 
-            componentes++;
+            System.out.println("COMPONENTES : " + componentes);
+
         }
-        
-        System.out.println("COMPONENTES :  " + componentes);
+
+        /*ANTERIOR*/
+//
+//        while (!verticesNaoVisitados.isEmpty()) {
+//            componentes++;
+//
+//            for (Aresta a : matrizGrafo.getListaArestasAdjacentes(verticesNaoVisitados.get(0))) {
+//                if (!a.getV2().equals(verticesNaoVisitados.get(0))) {
+//                    adjacentes.add(a);
+//                }
+//            }
+//            verticesVisitados.add(verticesNaoVisitados.get(0));
+//
+//            verticesNaoVisitados.get(0).setStatus(false);
+//            System.out.println("REMOVO VERTICE  " + verticesNaoVisitados.get(0));
+//            verticesNaoVisitados.remove(0);
+//
+//            while (!adjacentes.isEmpty()) {
+//                System.out.println("VERTICE ATUAL " + adjacentes.get(0).getV2());
+//                System.out.println("\nVERTICES NÃO VISITADOS : " + verticesNaoVisitados.toString());
+//                System.out.println("VERTICES VISITADOS : " + verticesVisitados.toString());
+//                System.out.println("VERTICES ADJACENTES : " + adjacentes.toString() + "\n");
+////                
+//                auxAdjacentes = matrizGrafo.getListaArestasAdjacentes(adjacentes.get(0).getV2());
+//                verticesVisitados.add(adjacentes.get(0).getV2());
+//                adjacentes.get(0).setPercorrida(true);
+//
+//                for (int i = 0; i < verticesNaoVisitados.size(); i++) { //remover da lista de vertices nao percorridos
+//                    if (verticesNaoVisitados.get(i).equals(adjacentes.get(0).getV2())) {
+//
+//                        System.out.println("REMOVENDO VERTICE " + verticesNaoVisitados.get(i));
+//                        verticesVisitados.add(verticesNaoVisitados.get(i));
+//                        verticesNaoVisitados.get(i).setStatus(false);
+//                        verticesNaoVisitados.remove(i);
+//                    }
+//                }
+//
+//                for (int j = 0; j < auxAdjacentes.size(); j++) {
+//                    if ((!auxAdjacentes.get(j).isPercorrida()) && (auxAdjacentes.get(j).getV2().isStatus())
+//                            && (!verticesVisitados.contains(auxAdjacentes.get(j).getV2()))) {
+//                        System.out.println("ADICIONANDO ARESTA : " + auxAdjacentes.get(j));
+//                        adjacentes.add(auxAdjacentes.get(j));
+//                    }
+//                }
+//
+//                System.out.println("REMOVENDO ARESTA : " + adjacentes.get(0).toString());
+//                verticesVisitados.add(adjacentes.get(0).getV2());
+//                adjacentes.remove(0);
+//
+//                System.out.println("\n------------------- proxima iteração --------------------\n");
+//            }
+//
+//        }
+//
+//        for (int i = 0; i < matrizGrafo.getVerticesGrafo().size(); i++) {
+//            if (matrizGrafo.getVerticesGrafo().get(i).isStatus()) {
+//                System.out.println("VERTICE VÁLIDO ");
+//            }
+//        }
+//        System.out.println("COMPONENTES : " + componentes);
     }
 
     public static void main(String[] args) throws IOException {
