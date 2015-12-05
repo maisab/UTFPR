@@ -33,6 +33,7 @@ public class Grafo {
 
     public void adicionaVertice(Vertice v) {
         this.grafo.put(v, new ArrayList<Aresta>());
+//        System.out.println("ADICIONOU VERTICE");
 //        this.grafo.get(v).addAll(listaArestas);
     }
 
@@ -41,10 +42,13 @@ public class Grafo {
 
         for (Map.Entry entry : this.grafo.entrySet()) {
             if (entry.getKey().equals(v)) {
+//                System.out.println("ACHOU VERTICE : " + v.getNumero());
                 aresta = (ArrayList<Aresta>) entry.getValue();
                 aresta.add(a);//adiciono a aresta atual
                 entry.setValue(aresta); //coloco o array de aresta de volta
+//                System.out.println("ADICIONOU ARESTA");
             }
+
         }
     }
 
@@ -66,6 +70,21 @@ public class Grafo {
         }
 
         return vertices;
+    }
+
+    public Vertice getVertice(int numero) {
+        Vertice vertice = new Vertice();
+
+        for (Map.Entry entry : this.grafo.entrySet()) {
+            vertice = (Vertice) entry.getKey();
+            if (vertice.getNumero() == numero) {
+//                System.out.println("ACHOU VERTICE " + vertice.getNumero());
+                return vertice;
+            }
+        }
+//        System.out.println("NÃO ACHOU VERTICE " + vertice.getNumero());
+
+        return null;
     }
 
     public ArrayList<Aresta> getListaArestasAdjacentes(Vertice v) {
