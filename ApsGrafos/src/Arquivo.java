@@ -49,10 +49,6 @@ public class Arquivo {
                 insereMatrizAtual(listaLinhaAtual);
                 System.out.println("\n****************ACABOU A MATRIZ*********************\n");
                 listaLinhaAtual.clear(); //limpa a lista
-//                if (cont == 1) {
-//                    return;
-//                }
-//                cont++;
             } else {
                 listaLinhaAtual.add(linha);
             }
@@ -79,17 +75,13 @@ public class Arquivo {
             linhaCertaAtual.clear();
 
         }
-
         completarMatriz();
         montaGrafo();
-
         if (contaCC(matrizGrafo) > 1) {
             System.out.println("MATRIZ INVÁLIDA");
         } else {
             criaArvoreMinima(matrizGrafo);
         }
-
-//        contaAdjacenciasPorVertice();
     }
 
     static void preencherMatriz(ArrayList<String> linhaCertaAtual, int controleLinhaAtual, int posLinha) {
@@ -120,7 +112,6 @@ public class Arquivo {
 
     static void montaGrafo() {
         matrizGrafo = new Grafo();
-
         List<Aresta> listaArestasVerticeAtual = new ArrayList<>();
         Vertice v = null;
         Vertice u = null;
@@ -128,7 +119,6 @@ public class Arquivo {
 
         for (int i = 0; i < matriz.length; i++) {
             v = criaVertice(i);
-
             for (int j = 0; j < matriz.length; j++) {
                 u = criaVertice(j);
                 u.setNumero(j);
@@ -141,7 +131,6 @@ public class Arquivo {
                     listaArestasVerticeAtual.add(a);
                 }
             }
-
             matrizGrafo.adicionaAresta(v, listaArestasVerticeAtual);
             listaArestasVerticeAtual.clear();
         }
@@ -165,16 +154,11 @@ public class Arquivo {
                 v = new Vertice();
                 v.setNumero(i);
                 verticesCriados.add(v);
-//                System.out.println("VERTICES CRIADOS" + verticesCriados.toString());
-//                System.out.println("numero + " + numero);
             }
             v = verticesCriados.get(numero);
         } else {
             v = verticesCriados.get(numero);
-//            System.out.println("PEGOU VERTICE EXISTENTE" + v.toString());
         }
-//        System.out.println("\nCRIA VERTICES : " + verticesCriados.toString());
-
         return v;
     }
 
@@ -190,10 +174,8 @@ public class Arquivo {
 
             adjacentes = grafo.getListaVerticesAdjacentes(verticesNaoVisitados.get(0));
             verticesVisitados.add(verticesNaoVisitados.get(0));
-//            System.out.println("REMOVENDO VERTICE :" + verticesNaoVisitados.get(0));
             verticesNaoVisitados.remove(0);
 
-//            System.out.println("--------------------------CONTOU COMPONENTE--------------------------");
             while (!adjacentes.isEmpty()) {
 
                 auxAdjacentes = grafo.getListaVerticesAdjacentes(adjacentes.get(0)); //recebo os adjacentes dele
@@ -210,18 +192,10 @@ public class Arquivo {
                         verticesNaoVisitados.remove(k);
                     }
                 }
-
-//                System.out.println("REMOVE VERTICE " + adjacentes.get(0));
                 verticesVisitados.add(adjacentes.get(0));
                 adjacentes.remove(0);
-
-//                System.out.println("NÃO VISITADOS : " + verticesNaoVisitados.toString());
-//                System.out.println("VISITADOS : " + verticesVisitados.toString());
-//                System.out.println("ADJACENTES : " + adjacentes.toString());
-//                System.out.println("-------PROXIMO ADJACENTE ------------------");
             }
         }
-//        System.out.println("COMPONENTES : " + componentes);
         return componentes;
     }
 
@@ -239,7 +213,6 @@ public class Arquivo {
         for (int j = 0; j < g.getVerticesGrafo().size(); j++) { //adiciona todos os vertices
             auxGrafo.adicionaVertice(g.getVerticesGrafo().get(j));
             novoGrafo.adicionaVertice(g.getVerticesGrafo().get(j));
-
         }
 
         while (numComponentes > 1) {
@@ -262,11 +235,7 @@ public class Arquivo {
                     menorNumeroComponentes = numComponentes;
                 }
             }
-//            System.out.println(
-//                    "menor label : " + listaLabels.get(posMenorLabel));
-//            System.out.println(
-//                    "menor num componentes " + menorNumeroComponentes);
-            
+
             arestasMenores = g.getArestasPorLabel(listaLabels.get(posMenorLabel));
             novoGrafo = insereArestasNoGrafo(arestasMenores, novoGrafo);
 
@@ -280,18 +249,14 @@ public class Arquivo {
     }
 
     static Grafo insereArestasNoGrafo(ArrayList<Aresta> arestasLabel, Grafo g) {
-
         for (int i = 0; i < arestasLabel.size(); i++) {
             g.adicionaArestaPorVertice(arestasLabel.get(i).getV1(), arestasLabel.get(i));
         }
-
-//        g.printGrafo();
         return g;
     }
 
     public static void main(String[] args) throws IOException {
         lerArquivo();
-
     }
 
 }
