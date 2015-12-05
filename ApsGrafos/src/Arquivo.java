@@ -27,8 +27,7 @@ public class Arquivo {
     static int componentes = 0;
 
     static ArrayList<Vertice> verticesCriados = new ArrayList<>();
-//    static ArrayList<Vertice> verticesNaoVisitados;
-//    static ArrayList<Aresta> adjacenciasVertice;
+    static int cont = 0;
 
     public Arquivo() {
 
@@ -50,7 +49,10 @@ public class Arquivo {
                 insereMatrizAtual(listaLinhaAtual);
                 System.out.println("\n****************ACABOU A MATRIZ*********************\n");
                 listaLinhaAtual.clear(); //limpa a lista
-//                return;
+//                if (cont == 1) {
+//                    return;
+//                }
+//                cont++;
             } else {
                 listaLinhaAtual.add(linha);
             }
@@ -84,18 +86,10 @@ public class Arquivo {
         if (contaCC(matrizGrafo) > 1) {
             System.out.println("MATRIZ INVÁLIDA");
         } else {
-            geraArvoreMinima(matrizGrafo);
+            criaArvoreMinima(matrizGrafo);
         }
 
 //        contaAdjacenciasPorVertice();
-    }
-
-    public static void contaAdjacenciasPorVertice() {
-        for (Map.Entry entry : matrizGrafo.getGrafo().entrySet()) {
-//            for(List<Aresta> a : matrizGrafo.getGrafo().values()){
-            System.out.println("PARA O VERTICE  " + entry.getKey().toString() + " LISTA ADJ  " + entry.getValue());
-//            }
-        }
     }
 
     static void preencherMatriz(ArrayList<String> linhaCertaAtual, int controleLinhaAtual, int posLinha) {
@@ -134,7 +128,7 @@ public class Arquivo {
 
         for (int i = 0; i < matriz.length; i++) {
             v = criaVertice(i);
-            
+
             for (int j = 0; j < matriz.length; j++) {
                 u = criaVertice(j);
                 u.setNumero(j);
@@ -227,39 +221,72 @@ public class Arquivo {
 //                System.out.println("-------PROXIMO ADJACENTE ------------------");
             }
         }
-        System.out.println("COMPONENTES : " + componentes);
+//        System.out.println("COMPONENTES : " + componentes);
         return componentes;
     }
 
-    static void geraArvoreMinima(Grafo grafo) {
-        ArrayList<String> labels = grafo.getLabels();
+    static void criaArvoreMinima(Grafo g) {
+        ArrayList<String> listaLabels = g.getLabels();
         ArrayList<Aresta> arestasPorLabel = new ArrayList<>();
-        System.out.println("LABELS : " + labels.toString());
-        
+        ArrayList<Aresta> arestasAtual = new ArrayList<>();
+        ArrayList<Aresta> arestasMenores = new ArrayList<>();
+        ArrayList<Vertice> verticesAtual = new ArrayList<>();
+        int numComponentes = 999, menorNumeroComponentes = 999999, posMenorLabel = 0;
+
         Grafo novoGrafo = new Grafo();
         Grafo auxGrafo = new Grafo();
 
-//        while(!labels.isEmpty()){
-            arestasPorLabel = grafo.getArestasPorLabel(labels.get(0));
-            adicionaArestasLabel(auxGrafo, labels.get(0), arestasPorLabel);
+        for (int j = 0; j < g.getVerticesGrafo().size(); j++) { //adiciona todos os vertices
+            auxGrafo.adicionaVertice(g.getVerticesGrafo().get(j));
+            novoGrafo.adicionaVertice(g.getVerticesGrafo().get(j));
+
+        }
+
+        while (numComponentes > 1) {
+            for (int i = 0; i < listaLabels.size(); i++) {
+                auxGrafo.deleteAll();
+                
+                for (int j = 0; j < novoGrafo.getVerticesGrafo().size(); j++) { //adiciona todos os vertices
+                    auxGrafo.adicionaVertice(g.getVerticesGrafo().get(j));
+                }
+                for (int k = 0; k < novoGrafo.getVerticesGrafo().size(); k++) { //adiciona as arestas
+                    arestasAtual = novoGrafo.getListaArestasAdjacentes(novoGrafo.getVerticesGrafo().get(k)); //recebe adjacentes daquele vertice
+                    auxGrafo.adicionaAresta(novoGrafo.getVerticesGrafo().get(k), arestasAtual);
+                    arestasAtual.clear();
+                }
+                arestasPorLabel = g.getArestasPorLabel(listaLabels.get(i));
+                insereArestasNoGrafo(arestasPorLabel, auxGrafo);
+                numComponentes = contaCC(auxGrafo);
+                if (menorNumeroComponentes > numComponentes) {
+                    posMenorLabel = i;
+                    menorNumeroComponentes = numComponentes;
+                }
+            }
+//            System.out.println(
+//                    "menor label : " + listaLabels.get(posMenorLabel));
+//            System.out.println(
+//                    "menor num componentes " + menorNumeroComponentes);
             
-//        }
+            arestasMenores = g.getArestasPorLabel(listaLabels.get(posMenorLabel));
+            novoGrafo = insereArestasNoGrafo(arestasMenores, novoGrafo);
+
+            listaLabels.remove(posMenorLabel);
+            menorNumeroComponentes = 999;
+            posMenorLabel = 0;
+
+        }
+        System.out.println("ÁRVORE MÍNIMA");
+        novoGrafo.printGrafo();
     }
 
-    static Grafo adicionaArestasLabel(Grafo grafo, String label, ArrayList<Aresta> arestasPorLabel) {
-        ArrayList<Aresta> arestasLabel = arestasPorLabel;
-        Grafo grafo2 = grafo;
-        
-        System.out.println("Arestas por label : " + arestasLabel.toString());
-        for(int i = 0; i < arestasLabel.size(); i++){
-            grafo2.adicionaArestaPorVerticePorAresta(arestasLabel.get(0).getV1(), arestasLabel.get(0));
+    static Grafo insereArestasNoGrafo(ArrayList<Aresta> arestasLabel, Grafo g) {
+
+        for (int i = 0; i < arestasLabel.size(); i++) {
+            g.adicionaArestaPorVertice(arestasLabel.get(i).getV1(), arestasLabel.get(i));
         }
-        
-        System.out.println("PRINT GRAFO 2");
-        grafo2.printGrafo();
-        
-        
-        return grafo2;
+
+//        g.printGrafo();
+        return g;
     }
 
     public static void main(String[] args) throws IOException {

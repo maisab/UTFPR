@@ -36,39 +36,31 @@ public class Grafo {
         this.grafo.get(v).addAll(listaArestas);
     }
 
-    public void adicionaArestaPorVerticePorAresta(Vertice v, Aresta a) {
+    public void adicionaVertice(Vertice v) {
+        this.grafo.put(v, new ArrayList<Aresta>());
+//        this.grafo.get(v).addAll(listaArestas);
+    }
+
+    public void adicionaArestaPorVertice(Vertice v, Aresta a) {
         ArrayList<Aresta> aresta = new ArrayList<>();
 
-        if (grafo.isEmpty()) {
-            aresta.add(a);
-            this.grafo.put(v, new ArrayList<Aresta>());
-            this.grafo.get(v).addAll(aresta);
-        } else {
-            for (Map.Entry entry : this.grafo.entrySet()) {
-                if (entry.getKey().equals(v)) {
-                    System.out.println("achou vertice");
-                    System.out.println("aresta : " + aresta.toString());
-                    aresta = (ArrayList<Aresta>) entry.getValue();
-                    aresta.add(a);//adiciono a aresta atual
-
-                    entry.setValue(aresta); //coloco o array de aresta de volta
-                }
+        for (Map.Entry entry : this.grafo.entrySet()) {
+            if (entry.getKey().equals(v)) {
+                aresta = (ArrayList<Aresta>) entry.getValue();
+                aresta.add(a);//adiciono a aresta atual
+                entry.setValue(aresta); //coloco o array de aresta de volta
             }
         }
     }
 
     public void printGrafo() {
         for (Map.Entry entry : this.grafo.entrySet()) {
+            System.out.println("\n");
             System.out.println("VERTICE : " + entry.getKey().toString());
             for (Aresta aresta : (List<Aresta>) entry.getValue()) {
                 System.out.println("Aresta " + aresta.toString());
             }
-            System.out.println("\n");
         }
-    }
-
-    public void getNumeroVertices() {
-        System.out.println("NUMERO DE VERTICES DO GRAFO : " + this.grafo.keySet().size());
     }
 
     public ArrayList<Vertice> getVerticesGrafo() {
@@ -98,6 +90,7 @@ public class Grafo {
         return adjacencias;
     }
 
+//        System.out.println("não ENCONTROU VERTICE");
     public ArrayList<Vertice> getListaVerticesAdjacentes(Vertice v) {
         ArrayList<Vertice> adjacentes = new ArrayList<>();
         Vertice aux = new Vertice();
@@ -148,4 +141,8 @@ public class Grafo {
         return adjacencias;
     }
 
+    public void deleteAll() {
+        grafo.clear();
+
+    }
 }
