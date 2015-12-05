@@ -36,6 +36,27 @@ public class Grafo {
         this.grafo.get(v).addAll(listaArestas);
     }
 
+    public void adicionaArestaPorVerticePorAresta(Vertice v, Aresta a) {
+        ArrayList<Aresta> aresta = new ArrayList<>();
+
+        if (grafo.isEmpty()) {
+            aresta.add(a);
+            this.grafo.put(v, new ArrayList<Aresta>());
+            this.grafo.get(v).addAll(aresta);
+        } else {
+            for (Map.Entry entry : this.grafo.entrySet()) {
+                if (entry.getKey().equals(v)) {
+                    System.out.println("achou vertice");
+                    System.out.println("aresta : " + aresta.toString());
+                    aresta = (ArrayList<Aresta>) entry.getValue();
+                    aresta.add(a);//adiciono a aresta atual
+
+                    entry.setValue(aresta); //coloco o array de aresta de volta
+                }
+            }
+        }
+    }
+
     public void printGrafo() {
         for (Map.Entry entry : this.grafo.entrySet()) {
             System.out.println("VERTICE : " + entry.getKey().toString());
@@ -62,7 +83,6 @@ public class Grafo {
 
     public ArrayList<Aresta> getListaArestasAdjacentes(Vertice v) {
         ArrayList<Aresta> adjacencias = new ArrayList<>();
-        
 
         for (Map.Entry entry : this.grafo.entrySet()) {
             if (entry.getKey().equals(v)) {
@@ -83,7 +103,7 @@ public class Grafo {
         Vertice aux = new Vertice();
 
         for (Map.Entry entry : this.grafo.entrySet()) {
-            aux = (Vertice) entry.getKey(); 
+            aux = (Vertice) entry.getKey();
             if (aux.equals(v)) {
 //            if (aux.getNumero() == v.getNumero()) {
                 for (Aresta e : (List<Aresta>) entry.getValue()) {
@@ -110,6 +130,22 @@ public class Grafo {
         }
 
         return labels;
+    }
+
+    public ArrayList<Aresta> getArestasPorLabel(String label) {
+
+        ArrayList<Aresta> adjacencias = new ArrayList<>();
+        Aresta a = new Aresta();
+
+        for (Map.Entry entry : this.grafo.entrySet()) {
+            for (Aresta e : (List<Aresta>) entry.getValue()) {
+                if (e.getLabel().equals(label)) {
+                    adjacencias.add(e);
+                }
+            }
+        }
+//                System.out.println("ENCONTROU VERTICE");
+        return adjacencias;
     }
 
 }
