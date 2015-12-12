@@ -55,9 +55,9 @@ public class Grafo {
     public void printGrafo() {
         for (Map.Entry entry : this.grafo.entrySet()) {
             System.out.println("\n");
-            System.out.println("VERTICE : " + entry.getKey().toString());
+//            System.out.println("VERTICE : " + entry.getKey().toString());
             for (Aresta aresta : (List<Aresta>) entry.getValue()) {
-                System.out.println("Aresta " + aresta.toString());
+//                System.out.println("Aresta " + aresta.toString());
             }
         }
     }
@@ -123,6 +123,19 @@ public class Grafo {
 
 //        System.out.println("\n NÃO ENCONTROU O VERTICE \n");
         return adjacentes;
+    }
+
+    public Aresta getArestaVU(Vertice v, Vertice u) {
+        for (Map.Entry entry : this.grafo.entrySet()) {
+            if (entry.getKey().equals(v)) {
+                for (Aresta e : (List<Aresta>) entry.getValue()) {
+                    if (e.getV2().equals(u)) {
+                        return e;
+                    }
+                }
+            }
+        }
+        return null;
     }
 
     public void deleteAll() {

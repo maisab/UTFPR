@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -25,6 +26,8 @@ public class Arquivo {
     static Grafo matrizGrafo;
     static String[][] matriz;
     static int componentes = 0;
+    static double funcao = 0;
+    static int contMatrizes = 0;
 
     static ArrayList<Vertice> verticesCriados = new ArrayList<>();
     static int cont = 0;
@@ -35,7 +38,7 @@ public class Arquivo {
 
     private static void lerArquivo() throws FileNotFoundException, IOException {
         String linha = "";
-        FileReader file = new FileReader(new File("LDGraph20_20.txt"));
+        FileReader file = new FileReader(new File("instancias/Group 1/LDGraph50_50.txt"));
         BufferedReader br = new BufferedReader(file);
         ArrayList<String> listaLinhaAtual = new ArrayList<>();
 
@@ -47,7 +50,7 @@ public class Arquivo {
         while (linha != null) {
             if (linha.trim().length() == 0) { // acabou a matriz atual
                 insereMatrizAtual(listaLinhaAtual);
-                System.out.println("\n****************ACABOU A MATRIZ*********************\n");
+//                System.out.println("\n****************ACABOU A MATRIZ*********************\n");
                 listaLinhaAtual.clear(); //limpa a lista
             } else {
                 listaLinhaAtual.add(linha);
@@ -78,8 +81,9 @@ public class Arquivo {
         completarMatriz();
         montaGrafo();
         if (contaCC(matrizGrafo) > 1) {
-            System.out.println("MATRIZ INVÁLIDA");
+//            System.out.println("MATRIZ INVÁLIDA");
         } else {
+            contMatrizes++;
             criaArvoreMinima(matrizGrafo);
         }
     }
@@ -124,7 +128,7 @@ public class Arquivo {
                 u.setNumero(j);
                 a = new Aresta();
 
-                if ((!matriz[i][j].equals("20"))) { // adiciona somente adjacencias certas
+                if ((!matriz[i][j].equals(labelMatriz))) { // adiciona somente adjacencias certas
                     a.setV1(v);
                     a.setV2(u);
                     a.setLabel(matriz[i][j]);
@@ -218,7 +222,7 @@ public class Arquivo {
         while (numComponentes > 1) {
             for (int i = 0; i < listaLabels.size(); i++) {
                 auxGrafo.deleteAll();
-                
+
                 for (int j = 0; j < novoGrafo.getVerticesGrafo().size(); j++) { //adiciona todos os vertices
                     auxGrafo.adicionaVertice(g.getVerticesGrafo().get(j));
                 }
@@ -244,9 +248,10 @@ public class Arquivo {
             posMenorLabel = 0;
 
         }
-        System.out.println("ÁRVORE MÍNIMA");
-        novoGrafo.printGrafo();
+        System.out.println(novoGrafo.getLabels().toString());
+        funcao += novoGrafo.getLabels().size();
     }
+    
 
     static Grafo insereArestasNoGrafo(ArrayList<Aresta> arestasLabel, Grafo g) {
         for (int i = 0; i < arestasLabel.size(); i++) {
@@ -256,7 +261,14 @@ public class Arquivo {
     }
 
     public static void main(String[] args) throws IOException {
+        long time1 = System.currentTimeMillis();
         lerArquivo();
+        long time2 = System.currentTimeMillis();
+        System.out.println(time2-time1);
+        
+        System.out.println("funcao " + funcao);
+        System.out.println("cont matrizes " + contMatrizes);
+        System.out.println("valor da função : " + funcao/contMatrizes);
     }
 
 }

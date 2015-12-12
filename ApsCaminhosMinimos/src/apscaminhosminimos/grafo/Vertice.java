@@ -13,7 +13,9 @@ public class Vertice {
     private String id;
     private int numero;
     private boolean status = true;
-    private int cor; //0 - branco; 1 - cinza; 2 - preto
+    private int distancia;
+    private Vertice pai;
+    private boolean visitar;
     
 
     public Vertice() {
@@ -45,14 +47,34 @@ public class Vertice {
         this.numero = numero;
     }
 
-    public int getCor() {
-        return cor;
+    public int getDistancia() {
+        return distancia;
     }
 
-    public void setCor(int cor) {
-        this.cor = cor;
+    public void setDistancia(int distancia) {
+        this.distancia = distancia;
     }
 
+    public Vertice getPai() {
+        return pai;
+    }
+
+    public void setPai(Vertice pai) {
+        this.pai = pai;
+    }
+
+    public boolean isVisitar() {
+        return visitar;
+    }
+
+    public void setVisitar(boolean visitar) {
+        this.visitar = visitar;
+    }
+
+    
+
+    
+    
     
     @Override
     public String toString() {
